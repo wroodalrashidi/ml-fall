@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ResQ Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dashboard.css') }}"
+    />
+  </head>
+
+  <body>
+    <!-- 🔔 ENABLE ALERTS BUTTON -->
+    <button
+      id="enableAlerts"
+      style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ff6a3d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-size: 13px;
+        border: none;
+        cursor: pointer;
+        z-index: 9999;
+      "
+    >
+      🔔 Enable alerts
+    </button>
+
+    <div class="layout">
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-logo-area">
+            <div class="sidebar-logo-fill"></div>
+          </div>
+
+          <div class="navigation-section">
+            <div class="nav-title">Navigation</div>
+            <div class="nav-group">
+              <button class="nav-btn active">
+                <span>Dashboard</span>
+                <span class="nav-pill">LIVE</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-status-card">
+            <div class="status-row">
+              <span class="status-dot"></span>
+              <span>Model running</span>
+            </div>
+            <div class="status-subtext">ResQ · Fall Detection Monitoring</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ===== MAIN ===== -->
+      <main class="main">
+        <header class="main-header">
+          <div>
+            <h1>Dashboard</h1>
+            <p class="subtitle">
+              Confirmed fall events (<strong>Kuwait time</strong>)
+            </p>
+          </div>
+        </header>
+
+        <!-- ===== TOP GRID ===== -->
+        <section class="top-grid">
+          <!-- System Snapshot -->
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-label">System</div>
+                <div class="card-title">Snapshot</div>
+              </div>
+              <div class="chip">Live</div>
+            </div>
+
+            <div class="snapshot-grid">
+              <div class="snapshot-item">
+                <div class="snapshot-label">Total Events</div>
+                <div class="snapshot-count">
+                  <span id="totalImages">0</span>
+                </div>
+              </div>
+
+              <div class="snapshot-item">
+                <div class="snapshot-label">Falls</div>
+                <div class="snapshot-count">
+                  <span id="fallCount">0</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Live Camera -->
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-label">Camera</div>
+                <div class="card-title">Live Feed</div>
+              </div>
+              <div class="chip">LIVE</div>
+            </div>
+
+            <div class="map-container">
+              <img
+                src="{{ url_for('video_feed') }}"
+                class="deployment-image"
+                alt="Live Camera"
+              />
+            </div>
+          </article>
+
+          <!-- Status -->
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-label">Status</div>
+                <div class="card-title">Quick Glance</div>
+              </div>
+            </div>
+
+            <div class="status-grid">
+              <div class="status-row">
+                <div class="status-label">Last fall</div>
+                <div class="status-value" id="lastFallDetected">—</div>
+              </div>
+
+              <div class="status-row">
+                <div class="status-label">Model</div>
+                <div class="status-value status-ok">Running</div>
+              </div>
+
+              <div class="status-row">
+                <div class="status-label">Timezone</div>
+                <div class="status-value">Asia/Kuwait</div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- ===== EVENTS TABLE ===== -->
+        <section class="bottom-grid">
+          <article class="card">
+            <div class="table-card-header">
+              <div>
+                <div class="card-label">Events</div>
+                <div class="table-title">Fall Log</div>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="eventsBody">
+                  <tr>
+                    <td colspan="4" style="text-align: center">Loading…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <!-- 🔊 ALERT AUDIO -->
+    <audio
+      id="fallAlert"
+      src="{{ url_for('static', filename='alert.mp3') }}"
+      preload="auto"
+    ></audio>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+  </body>
+</html>
